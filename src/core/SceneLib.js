@@ -28,21 +28,21 @@ export default class SceneLibrary {
 
 		this.init();
 	}
-
 	async importScenes() {
 		let failed = false;
 
 		for (let i = 1; i <= 20; i++) {
 			if (failed) return;
 
-			await import(`../scenes/scene-${i}`)
-				.then((scene) => {
-					this.scenes.push(scene.default);
-				})
-				.catch(() => {
-					this.sceneCount = i - 1;
-					failed = true;
-				});
+			await import(`/public/scenes/scene-${i}.js`)
+			.then((scene) => {
+				this.scenes.push(scene.default);
+				
+			})
+			.catch(() => {
+				this.sceneCount = i - 1;
+				failed = true;
+			});
 		}
 	}
 

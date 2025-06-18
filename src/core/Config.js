@@ -1,7 +1,7 @@
 export default class Config {
 	constructor() {
 		this.muted = true;
-		this.maxMicVolume = 175;
+		this.maxMicVolume = 225;
 		
 		this.keys = Object.keys(this);
 		

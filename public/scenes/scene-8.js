@@ -10,8 +10,8 @@ import {
 
 import * as THREE from "three";
 
-import AudioManager from "../core/AudioManager";
-import Config from "../core/Config";
+import AudioManager from "/src/core/AudioManager";
+import Config from "/src/core/Config";
 
 export default class StatesScene extends Scene {
 	constructor(camera) {

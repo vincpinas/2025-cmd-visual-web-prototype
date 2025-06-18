@@ -6,8 +6,7 @@ import AudioManager from "./AudioManager";
 import SceneManager from "./SceneManager";
 
 // Scenes
-import StatesScene from "../scenes/scene-1";
-import SceneTwo from "../scenes/scene-2";
+import DefaultScene from "/public/scenes/scene-1";
 import SceneLibrary from "./SceneLib";
 
 export default class Animator {
@@ -37,7 +36,7 @@ export default class Animator {
 			new Audio("assets/frustrated.mp3"),
 		]);
 
-		this.sceneManager = SceneManager.getInstance(new StatesScene(this.camera));
+		this.sceneManager = SceneManager.getInstance(new DefaultScene(this.camera));
 	}
 
 	// UPDATE METHOD

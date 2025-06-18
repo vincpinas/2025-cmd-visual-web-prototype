@@ -9,8 +9,8 @@ import {
 	Mesh,
 } from "three";
 
-import AudioManager from "../core/AudioManager";
-import Config from "../core/Config";
+import AudioManager from "/src/core/AudioManager";
+import Config from "/src/core/Config";
 
 export default class StatesScene extends Scene {
 	constructor(camera) {
@@ -110,9 +110,31 @@ export default class StatesScene extends Scene {
 		positions.needsUpdate = true;
 	}
 
-	update() {
-		this.camera.fov += 0.1;
+	updateCamera(mic) {
+		if(!mic) return;
+
+		const minFOV = 10;
+		const maxFOV = 140;
+		const minDistance = 2;
+		const maxDistance = 8;
+		const maxVolume = this.config.maxMicVolume;
+		
+		const currentFOV = maxFOV - (mic.averageVolume / maxVolume) * (maxFOV - minFOV);
+		this.camera.fov = currentFOV;
 		this.camera.updateProjectionMatrix();
+
+		const currentDistance = maxDistance - (mic.averageVolume / maxVolume) * (maxDistance - minDistance);
+		this.camera.position.z = currentDistance;
+	}
+
+	updateFog() {
+		
+	}
+
+	update() {
+		const mic = this.audioManager.getSource("mic");
+
+		this.updateCamera(mic);
 
 		this.updateContentStatePositioning();
 	}

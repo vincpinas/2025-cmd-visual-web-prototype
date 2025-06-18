@@ -9,8 +9,8 @@ import {
 	Mesh,
 } from "three";
 
-import AudioManager from "../core/AudioManager";
-import Config from "../core/Config";
+import AudioManager from "/src/core/AudioManager";
+import Config from "/src/core/Config";
 
 export default class StatesScene extends Scene {
 	constructor(camera) {
@@ -24,8 +24,6 @@ export default class StatesScene extends Scene {
 		this.initEnvironment();
 		
 		this.initScene();
-
-		this.setupAudio();
 	}
 
 	setupAudio() {
@@ -35,7 +33,7 @@ export default class StatesScene extends Scene {
 	setupCamera(camera) {
 		this.camera = camera;
 
-		this.camera.position.set(0, 0, 10);
+		this.camera.position.set(0, 0, 2);
 		this.add(this.camera);
 	}
 
@@ -45,7 +43,6 @@ export default class StatesScene extends Scene {
 				geometry: new SphereGeometry(5, 64, 64),
 				material: new MeshStandardMaterial({
 					color: 0x66ccff,
-					wireframe: true,
 				}),
                 originalPositions: []
 			},
@@ -112,11 +109,53 @@ export default class StatesScene extends Scene {
 		positions.needsUpdate = true;
 	}
 
+	updateCamera(mic) {
+		if(!mic) return;
+		
+		const minFOV = 10;
+		const maxFOV = 125;
+		const minDistance = 3;
+		const maxDistance = 5.8;
+		const maxVolume = this.config.maxMicVolume;
+		
+		const currentFOV = maxFOV - (mic.averageVolume / maxVolume) * (maxFOV - minFOV);
+		this.camera.fov = currentFOV;
+		this.camera.updateProjectionMatrix();
+		
+		const currentDistance = maxDistance - (mic.averageVolume / maxVolume) * (maxDistance - minDistance);
+		this.camera.position.z = currentDistance;
+	}
+	
+	updateFog(mic) {
+		if(!mic) return;
+		
+		const minDensity = 0.005;
+		const maxDensity = 10;
+		const maxVolume = this.config.maxMicVolume;
+		
+		const currentDensity = minDensity + (mic.averageVolume / maxVolume) * (maxDensity - minDensity);
+		this.fog.density = currentDensity;
+		
+		const minRed = 0.5;
+		const maxRed = 1;
+		const minGreen = 0.1;
+		const maxGreen = 1;
+		const minBlue = 0.1;
+		const maxBlue = 1;
+		
+		const currentRed = minRed + (mic.averageVolume / maxVolume) * (maxRed - minRed);
+		const currentGreen = minGreen + (mic.averageVolume / maxVolume) * (maxGreen - minGreen);
+		const currentBlue = minBlue + (mic.averageVolume / maxVolume) * (maxBlue - minBlue);
+		
+		this.fog.color.setRGB(currentRed, currentGreen, currentBlue);
+	}
+
 	update() {
 		const mic = this.audioManager.getSource("mic");
 
-		this.camera.fov += 0.1;
-		this.camera.updateProjectionMatrix();
+		this.updateCamera(mic);
+
+		this.updateFog(mic);
 
 		this.updateContentStatePositioning();
 	}
