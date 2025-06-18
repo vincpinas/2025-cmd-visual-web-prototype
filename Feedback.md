@@ -1,0 +1,4 @@
+- Hogere pieken of luider geluid uitproberen
+- Tweenen voor lagere of delayed reacties
+- Geometries over elkaar heen leggen
+- Buitenste vorm reageert op de binnenste
