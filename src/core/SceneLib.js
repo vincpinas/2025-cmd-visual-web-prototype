@@ -31,10 +31,13 @@ export default class SceneLibrary {
 	async importScenes() {
 		let failed = false;
 
+		const isProduction = window.location.href.includes("netlify") ? true : false;
+		const sceneFolder = isProduction ? "/scenes" : "/public/scenes";
+
 		for (let i = 1; i <= 20; i++) {
 			if (failed) return;
 
-			await import(`/public/scenes/scene-${i}.js`)
+			await import(`${sceneFolder}/scene-${i}.js`)
 			.then((scene) => {
 				this.scenes.push(scene.default);
 				
