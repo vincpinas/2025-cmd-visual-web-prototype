@@ -34,9 +34,6 @@ export default class SceneLibrary {
 		// Try different path strategies for dev vs production
 		const paths = [
 			"/scenes/scene-",
-			"/public/scenes/scene-",
-			"./scenes/scene-",
-			"../public/scenes/scene-"
 		];
 
 		for (let i = 1; i <= 20; i++) {
