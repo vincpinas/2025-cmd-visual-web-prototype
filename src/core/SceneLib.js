@@ -31,21 +31,36 @@ export default class SceneLibrary {
 	async importScenes() {
 		let failed = false;
 
-		const isProduction = window.location.href.includes("netlify") ? true : false;
-		const sceneFolder = isProduction ? "/scenes" : "/public/scenes";
+		// Try different path strategies for dev vs production
+		const paths = [
+			"/scenes/scene-",
+			"/public/scenes/scene-",
+			"./scenes/scene-",
+			"../public/scenes/scene-"
+		];
 
 		for (let i = 1; i <= 20; i++) {
 			if (failed) return;
 
-			await import(`${sceneFolder}/scene-${i}.js`)
-			.then((scene) => {
-				this.scenes.push(scene.default);
+			let sceneLoaded = false;
+			
+			for (const basePath of paths) {
+				if (sceneLoaded) break;
 				
-			})
-			.catch(() => {
+				try {
+					const scene = await import(`${basePath}${i}.js`);
+					this.scenes.push(scene.default);
+					sceneLoaded = true;
+				} catch (error) {
+					// Continue to next path
+				}
+			}
+			
+			if (!sceneLoaded) {
+				console.log(`Scene ${i} not found, stopping import`);
 				this.sceneCount = i - 1;
 				failed = true;
-			});
+			}
 		}
 	}
 
