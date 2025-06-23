@@ -40,7 +40,7 @@ export default class SceneLibrary {
 	}
 
 	async importScenes() {
-		const isProduction = window.location.href.includes("netlify") ? true : false;
+		const isProduction = window.location.href.includes("netlify");
 		
 		if (isProduction) {
 			// Use static imports for production
