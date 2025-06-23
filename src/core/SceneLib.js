@@ -41,14 +41,22 @@ export default class SceneLibrary {
 
 	async importScenes() {
 		const isProduction = window.location.href.includes("netlify");
-		
+
 		if (isProduction) {
 			// Use static imports for production
-			const staticScenes = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Scene9];
-			staticScenes.forEach((scene, index) => {
-				if (scene && scene.default) {
-					this.scenes.push(scene.default);
-				}
+			const staticScenes = [
+				Scene1,
+				Scene2,
+				Scene3,
+				Scene4,
+				Scene5,
+				Scene6,
+				Scene7,
+				Scene8,
+				Scene9,
+			];
+			staticScenes.forEach((scene) => {
+				this.scenes.push(scene.default);
 			});
 			this.sceneCount = this.scenes.length;
 		} else {
