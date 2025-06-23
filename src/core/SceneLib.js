@@ -30,27 +30,18 @@ export default class SceneLibrary {
 	}
 	async importScenes() {
 		let failed = false;
-		let failCount = 0;
-		let timeout = null;
 
 		const isProduction = window.location.href.includes("netlify") ? true : false;
 		const basePath = isProduction ? "/scenes" : "/public/scenes";
 
-		for (let i = 1; i <= 20; i++) {
+		for (let i = 1; i <= 9; i++) {
 			failed = false;
-
-			if (failCount > 3) return;
 
 			await import(`${basePath}/scene-${i}.js`)
 			.then((scene) => {
 				this.scenes.push(scene.default);
-				
+				this.sceneCount = i;
 			})
-			.catch(() => {
-				this.sceneCount = i - 1 - failCount;
-				failed = true;
-				failCount++
-			});
 		}
 	}
 
