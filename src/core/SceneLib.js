@@ -1,6 +1,16 @@
-import Animator from "./Animator";
 import Config from "./Config";
 import SceneManager from "./SceneManager";
+
+// Static imports for production builds
+import Scene1 from "/scenes/scene-1.js";
+import Scene2 from "/scenes/scene-2.js";
+import Scene3 from "/scenes/scene-3.js";
+import Scene4 from "/scenes/scene-4.js";
+import Scene5 from "/scenes/scene-5.js";
+import Scene6 from "/scenes/scene-6.js";
+import Scene7 from "/scenes/scene-7.js";
+import Scene8 from "/scenes/scene-8.js";
+import Scene9 from "/scenes/scene-9.js";
 
 export default class SceneLibrary {
 	static _instance = null;
@@ -28,20 +38,34 @@ export default class SceneLibrary {
 
 		this.init();
 	}
+
 	async importScenes() {
-		let failed = false;
-
 		const isProduction = window.location.href.includes("netlify") ? true : false;
-		const basePath = isProduction ? "/scenes" : "/public/scenes";
+		
+		if (isProduction) {
+			// Use static imports for production
+			const staticScenes = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Scene9];
+			staticScenes.forEach((scene, index) => {
+				if (scene && scene.default) {
+					this.scenes.push(scene.default);
+				}
+			});
+			this.sceneCount = this.scenes.length;
+		} else {
+			// Use dynamic imports for development
+			const basePath = "/public/scenes";
 
-		for (let i = 1; i <= 9; i++) {
-			failed = false;
-
-			await import(`${basePath}/scene-${i}.js`)
-			.then((scene) => {
-				this.scenes.push(scene.default);
-				this.sceneCount = i;
-			})
+			for (let i = 1; i <= 20; i++) {
+				try {
+					const scene = await import(`${basePath}/scene-${i}.js`);
+					this.scenes.push(scene.default);
+					this.sceneCount = i;
+				} catch (error) {
+					console.log(`Scene ${i} not found, stopping import`);
+					this.sceneCount = i - 1;
+					break;
+				}
+			}
 		}
 	}
 
