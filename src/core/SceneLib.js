@@ -44,7 +44,7 @@ export default class SceneLibrary {
 
 		if (isProduction) {
 			// Use static imports for production
-			const staticScenes = [
+			this.scenes = [
 				Scene1,
 				Scene2,
 				Scene3,
@@ -55,9 +55,6 @@ export default class SceneLibrary {
 				Scene8,
 				Scene9,
 			];
-			staticScenes.forEach((scene) => {
-				this.scenes.push(scene.default);
-			});
 			this.sceneCount = this.scenes.length;
 		} else {
 			// Use dynamic imports for development
@@ -132,6 +129,9 @@ export default class SceneLibrary {
 
 	async getScene(index, camera) {
 		if (this.scenes.length <= 0) return null;
+
+		console.log(this.scenes, this.scenes[index], index)
+
 		return new this.scenes[index](camera);
 	}
 
