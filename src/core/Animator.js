@@ -6,7 +6,7 @@ import AudioManager from "./AudioManager";
 import SceneManager from "./SceneManager";
 
 // Scenes
-import DefaultScene from "/public/scenes/scene-1";
+import DefaultScene from "../scenes/scene-1";
 import SceneLibrary from "./SceneLib";
 
 export default class Animator {

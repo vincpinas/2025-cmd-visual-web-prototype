@@ -2,15 +2,15 @@ import Config from "./Config";
 import SceneManager from "./SceneManager";
 
 // Static imports for production builds
-import Scene1 from "/scenes/scene-1.js";
-import Scene2 from "/scenes/scene-2.js";
-import Scene3 from "/scenes/scene-3.js";
-import Scene4 from "/scenes/scene-4.js";
-import Scene5 from "/scenes/scene-5.js";
-import Scene6 from "/scenes/scene-6.js";
-import Scene7 from "/scenes/scene-7.js";
-import Scene8 from "/scenes/scene-8.js";
-import Scene9 from "/scenes/scene-9.js";
+import Scene1 from "../scenes/scene-1.js";
+import Scene2 from "../scenes/scene-2.js";
+import Scene3 from "../scenes/scene-3.js";
+import Scene4 from "../scenes/scene-4.js";
+import Scene5 from "../scenes/scene-5.js";
+import Scene6 from "../scenes/scene-6.js";
+import Scene7 from "../scenes/scene-7.js";
+import Scene8 from "../scenes/scene-8.js";
+import Scene9 from "../scenes/scene-9.js";
 
 export default class SceneLibrary {
 	static _instance = null;
@@ -53,7 +53,7 @@ export default class SceneLibrary {
 			this.sceneCount = this.scenes.length;
 		} else {
 			// Use dynamic imports for development
-			const basePath = "/public/scenes";
+			const basePath = "../scenes";
 
 			for (let i = 1; i <= 20; i++) {
 				try {
